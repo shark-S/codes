@@ -1,0 +1,74 @@
+//by priority queue
+// for min. distance between two nodes
+// spoj EZDIJKST
+#include<bits/stdc++.h>
+using namespace std;
+#define INF 100000000000007
+vector<pair<int,int> >g[100004];
+long long  d[100004];int vis[100004];
+struct comp{
+bool operator() (const pair<int,int> &a,const pair<int,int> &b)
+ {
+  return a.second > b.second;
+ }
+ };
+priority_queue<pair <int,int>,vector<pair<int,int> >,comp> Q;
+int main()
+{
+  int t;
+ scanf("%d",&t);
+  while(t--)
+  {
+   int n,m,u,v,w;
+    scanf("%d %d",&n,&m);
+   int i;
+   for(i=0;i<n;i++)
+    g[i+1].clear();
+    for(i=0;i<m;i++)
+    {
+     
+       scanf("%d %d %d",&u,&v,&w);
+         g[u].push_back(pair<int,int> (v,w));
+        }
+      for(i=1;i<=n;i++)
+	{     
+	 d[i]=INF;
+	  vis[i]=0;
+         }       
+	int s,r;
+   scanf("%d %d",&s,&r);
+      d[s]=0;
+     Q.push(pair<int,int>(s,0));
+  
+     while(!Q.empty())
+    {
+         u=Q.top().first;
+          Q.pop();
+         
+          for(i=0;i<g[u].size();i++)
+           {
+            v=g[u][i].first;
+            w=g[u][i].second;
+           if(!vis[v] && d[u]+w<d[v])
+             { 
+		d[v]=d[u]+w;
+               //vis[v]=1;
+               Q.push(pair<int,int> (v,d[v]));
+           }
+           
+        }vis[u]=1;
+        }
+        for(i=1;i<=n;i++)
+         {
+            if(i==r)
+              { if(d[i]!=INF)
+                printf("%lld\n",d[i]);
+                else
+                printf("NO\n");
+               }
+         }
+      
+     }
+      return 0;
+   }
+    
